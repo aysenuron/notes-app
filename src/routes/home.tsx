@@ -1,3 +1,4 @@
+import { Button } from "@/components/ui/button"
 import {
     Card,
     CardContent,
@@ -9,7 +10,7 @@ import {
   
 const CardItem = () => {
     return (
-        <Card>
+        <Card className="hover:drop-shadow-xl cursor-pointer transition-all duration-200 border-gray-300 dark:border-gray-700 hover:dark:border-gray-500">
   <CardHeader>
     <CardTitle>Card Title</CardTitle>
     <CardDescription>Card Description</CardDescription>
@@ -27,8 +28,21 @@ const CardItem = () => {
 export default function Home() {
     return (
         <>
-        <CardItem />
-        <h1>Hello</h1>
+        <main className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-4">
+          <CardItem />
+          <CardItem />
+          <CardItem />
+          <CardItem />
+          <CardItem />
+          <CardItem />
+          <CardItem />
+          <CardItem />
+          <CardItem />
+          <CardItem />
+          <CardItem />
+          <CardItem />
+        </main>
+        <Button size={"lg"} className="fixed drop-shadow-lg bottom-5 right-5 rounded-full text-xl h-14 w-14">+</Button>
         </>
     )
 }
