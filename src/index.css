@@ -20,8 +20,8 @@
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.141 0.005 285.823);
   --primary: oklch(0.795 0.184 86.047);
-  --primary-foreground: oklch(0.421 0.095 57.708);
-  --secondary: oklch(0.967 0.001 286.375);
+  --primary-foreground: oklch(0.08 0.1 154);
+  --secondary: oklch(0.96 0.001 270.58);
   --secondary-foreground: oklch(0.21 0.006 285.885);
   --muted: oklch(0.967 0.001 286.375);
   --muted-foreground: oklch(0.552 0.016 285.938);
@@ -69,7 +69,7 @@ body {
   }
 
   p {
-    @apply leading-7 [&:not(:first-child)]:mt-6 text-foreground;
+    @apply leading-6 text-foreground;
   }
 
   li {
