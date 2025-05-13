@@ -1,4 +1,5 @@
 type Tag = string;
+
 type Note = {
   title: string,
   content: string,

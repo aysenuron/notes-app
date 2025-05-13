@@ -3,6 +3,7 @@ import { BrowserRouter, Route, Routes } from 'react-router'
 import { ThemeProvider } from './components/ui/theme-provider'
 
 import Home from './routes/home'
+import Note from './routes/note'
 import Layout from './assets/layouts/layout'
 function App() {
 
@@ -12,6 +13,7 @@ function App() {
         <Routes>
           <Route path='/' element={<Layout />}>
             <Route index element={<Home />} />
+            <Route path=':id' element={<Note />} />
           </Route>
         </Routes>
       </BrowserRouter>

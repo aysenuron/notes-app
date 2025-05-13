@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react"
+import { Link } from "react-router"
 import { Button } from "@/components/ui/button"
 import CardItem from "@/components/ui/CardItem"
 import { Badge } from "@/components/ui/badge"
 import { Input } from "@/components/ui/input"
 import { getNotes } from "@/utils/api"
 import { Tag, Note } from "@/utils/types"
-import { el } from "date-fns/locale"
 
 export default function Home() {
   const [loading, setLoading] = useState<boolean>(false);
@@ -50,14 +50,16 @@ export default function Home() {
   });
 
   const noteElements = filteredNotes.map(note => (
+    <Link to={`/${note.id}`}
+    key={note.id}>
     <CardItem
-    key={note.id}
     title={note.title}
     content={note.content}
     createdAt={note.createdAt}
     updatedAt={note.updatedAt}
     tags={note.tags}
     />
+    </Link>
   ))
 
     return (
@@ -67,7 +69,7 @@ export default function Home() {
         <main className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-4 mt-5">
           {loading ? <h2>Notes are loading...</h2> : noteElements}
         </main>
-        <Button size={"lg"} className="fixed drop-shadow-lg bottom-5 right-5 lg:bottom-10 lg:right-10 rounded-full hover:shadow-none">Create new note</Button>
+        <Button size={"lg"} className="fixed drop-shadow-lg bottom-5 right-5 lg:bottom-10 lg:right-10 rounded-full hover:shadow-none">+ Create new note</Button>
         </>
     );
 }
