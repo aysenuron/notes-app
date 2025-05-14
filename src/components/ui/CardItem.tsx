@@ -1,7 +1,7 @@
-import { format } from "date-fns";
 import { Note } from "@/utils/types";
 import { Badge } from "./badge";
-import { getPreview } from "@/utils/preview";
+import { formatDate } from "@/utils/functions";
+import { getPreview } from "@/utils/functions";
 import {
     Card,
     CardContent,
@@ -12,8 +12,6 @@ import {
   } from "@/components/ui/card"
 
   type Props = Omit<Note, "id">
-
-  const formatDate = (timestamp: number) => format(new Date(timestamp * 1000), "PPP") 
   
 const CardItem = ({title, content, createdAt, updatedAt, tags}: Props) => {
     return (

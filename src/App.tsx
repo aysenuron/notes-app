@@ -3,7 +3,7 @@ import { BrowserRouter, Route, Routes } from 'react-router'
 import { ThemeProvider } from './components/ui/theme-provider'
 
 import Home from './routes/home'
-import Note from './routes/note'
+import Note from './routes/noteDetail'
 import Layout from './assets/layouts/layout'
 function App() {
 
