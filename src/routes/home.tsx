@@ -76,7 +76,7 @@ export default function Home() {
         <>
         <div className="flex gap-4">
           <Input onChange={inputHandler} className="w-full lg:w-1/2 xl:w-1/3" type="text" placeholder="Search" value={searchFilter ? searchFilter : ""} />
-          <Button onClick={() => updateParams("search", "")}>Clear</Button>
+          {searchFilter && <Button onClick={() => updateParams("search", "")}>Clear</Button>}
         </div>
         <div className="flex gap-2 mt-5 flex-wrap">
           {tags.map(tag => (
