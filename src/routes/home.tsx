@@ -1,11 +1,14 @@
 import { useEffect, useState } from "react"
-import { Link, useSearchParams, useNavigate } from "react-router"
+import { Link, useSearchParams } from "react-router"
 import { Button } from "@/components/ui/button"
 import CardItem from "@/components/ui/CardItem"
 import { Badge } from "@/components/ui/badge"
 import { Input } from "@/components/ui/input"
 import { getNotes } from "@/utils/api"
 import { Tag, Note } from "@/utils/types"
+import { useUpdateURLParams } from "@/hooks/useUpdateURLParams"
+
+import { X } from 'lucide-react';
 
 export default function Home() {
   const [loading, setLoading] = useState<boolean>(false);
@@ -13,11 +16,12 @@ export default function Home() {
   const [tags, setTags] = useState<Tag[]>([]);
 
   const [searchParams] = useSearchParams();
-  const navigate = useNavigate();
+  console.log(searchParams.toString());
+  const updateParams = useUpdateURLParams();
+
 
   const tagsFilter = searchParams.get("tags")?.split(",") ?? [];
   const searchFilter = searchParams.get("search")?.toLowerCase() ?? "";
-  console.log(tagsFilter, searchFilter);
 
   useEffect(() => {
     async function loadNotes() {
@@ -29,7 +33,7 @@ export default function Home() {
         const uniqueTags = [...new Set(allTags)];
         setTags(uniqueTags);
       } catch (error) {
-        TypeError("There was an error fetching data.")
+        console.error("Error fetching notes:", error);
       } finally {
         setLoading(false);
       }
@@ -39,13 +43,13 @@ export default function Home() {
 
   function inputHandler(e: React.ChangeEvent<HTMLInputElement>) {
     const searchWord = e.target.value.toLowerCase();
-    updateURLParams("search", searchWord);
+    updateParams("search", searchWord);
   }
 
   function tagHandler(tag: Tag) {
     let newTags: string[];
     tagsFilter.includes(tag) ? newTags = tagsFilter.filter(t => t !== tag): newTags = [...tagsFilter, tag];
-    updateURLParams("tags", newTags);
+    updateParams("tags", newTags);
   }
 
   const filteredNotes = notes.filter((note: Note) => {
@@ -54,19 +58,9 @@ export default function Home() {
     return matchesInput && matchesTag;
   });
 
-  function updateURLParams(key: string, value: string | string[] | null) {
-    const params = new URLSearchParams(searchParams);
-  
-    if (value && (Array.isArray(value) ? value.length > 0 : value !== "")) {
-      params.set(key, Array.isArray(value) ? value.join(",") : value);
-    } else {
-      params.delete(key);
-    }
-    navigate(`?${params.toString()}`);
-  }
-
   const noteElements = filteredNotes.map(note => (
-    <Link to={`/${note.id}`}
+    <Link to={`${note.id}`}
+    state={{search: `?${searchParams.toString()}`}}
     key={note.id}>
     <CardItem
     title={note.title}
@@ -80,8 +74,17 @@ export default function Home() {
 
     return (
         <>
-        <div><Input onChange={inputHandler} className="w-full lg:w-1/2 xl:w-1/3" type="text" placeholder="Search" /></div>
-        <div className="flex gap-2 mt-5 flex-wrap">{tags.map(tag => <Badge key={tag} variant={tagsFilter.includes(tag) ? "default" : "secondary"} className="cursor-pointer" onClick={() => tagHandler(tag)}>{tag}</Badge>)}</div>
+        <div className="flex gap-4">
+          <Input onChange={inputHandler} className="w-full lg:w-1/2 xl:w-1/3" type="text" placeholder="Search" value={searchFilter ? searchFilter : ""} />
+          <Button onClick={() => updateParams("search", "")}>Clear</Button>
+        </div>
+        <div className="flex gap-2 mt-5 flex-wrap">
+          {tags.map(tag => (
+            <Badge key={tag} variant={tagsFilter.includes(tag) ? "default" : "secondary"} className="cursor-pointer" onClick={() => tagHandler(tag)}>
+            {tag} {tagsFilter.includes(tag) && <Button variant={"secondary"} className="ml-0.5 h-1 w-1 rounded-full"><X /></Button>}
+            </Badge>
+          ))}
+            </div>
         <main className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-4 mt-5">
           {loading ? <h2>Notes are loading...</h2> : noteElements}
         </main>

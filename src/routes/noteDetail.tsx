@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams, Link } from "react-router"
+import { useParams, Link, useLocation } from "react-router"
 
 import { getNote } from "@/utils/api";
 import type { Note } from "@/utils/types";
@@ -13,6 +13,7 @@ export default function Note() {
     const [note, setNote] = useState<Note | null>(null)
 
     const params = useParams();
+    const location = useLocation();
 
     useEffect(() => {
         async function loadNote() {
@@ -33,11 +34,13 @@ export default function Note() {
     <NoteItem note={note} />
     : <h2>Note doesn't exist</h2>
 
+    const search = location.state?.search || ""; 
+
     return (
         <>
         <div className="mb-8 flex justify-between">
             {
-                <Link to={".."} relative="path"><ArrowLeft className="text-foreground" /></Link>
+                <Link to={`..${search}`} relative="path"><ArrowLeft className="text-foreground" /></Link>
             }
             <Button variant={"outline"}>
                 {
