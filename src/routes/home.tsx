@@ -88,7 +88,14 @@ export default function Home() {
         <main className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-4 mt-5">
           {loading ? <h2>Notes are loading...</h2> : noteElements}
         </main>
-        <Button size={"lg"} className="fixed drop-shadow-lg bottom-5 right-5 lg:bottom-10 lg:right-10 rounded-full hover:shadow-none">+ Create new note</Button>
+        <Link
+        to={`new`}
+        state={{search: `?${searchParams.toString()}`}}
+        >
+          <Button size={"lg"} className="fixed drop-shadow-lg bottom-5 right-5 lg:bottom-10 lg:right-10 rounded-full hover:shadow-none">
+            + Create new note
+          </Button>
+        </Link>
         </>
     );
 }

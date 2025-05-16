@@ -1,11 +1,10 @@
 import { useEffect, useState } from "react";
-import { useParams, Link, useLocation } from "react-router"
-
+import { useParams, Link } from "react-router"
+import GoBackButton from "@/components/ui/goBackButton";
 import { getNote } from "@/utils/api";
 import type { Note } from "@/utils/types";
 import NoteItem from "@/components/noteItem";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft } from 'lucide-react';
 import { SquarePen } from 'lucide-react';
 
 export default function Note() {
@@ -13,7 +12,6 @@ export default function Note() {
     const [note, setNote] = useState<Note | null>(null)
 
     const params = useParams();
-    const location = useLocation();
 
     useEffect(() => {
         async function loadNote() {
@@ -34,14 +32,10 @@ export default function Note() {
     <NoteItem note={note} />
     : <h2>Note doesn't exist</h2>
 
-    const search = location.state?.search || ""; 
-
     return (
         <>
         <div className="mb-8 flex justify-between">
-            {
-                <Link to={`..${search}`} relative="path"><ArrowLeft className="text-foreground" /></Link>
-            }
+            <GoBackButton />
             <Button variant={"outline"}>
                 {
                     <SquarePen className="w-4 h-4" />
