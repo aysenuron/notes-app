@@ -55,6 +55,13 @@ export default function NewNote() {
         setFilteredTags([]);
       };
 
+      const handleNewTag = (tagValue: Tag) => {
+        if(!selectedTags.includes(tagValue)) {
+            setSelectedTags(prevTags => [...prevTags, tagValue]);
+        }
+        setTextTag("");
+      }
+
       const selectedTagElements = selectedTags.map(tag => <Badge key={tag}>{tag}</Badge>);
 
     return (
@@ -88,7 +95,7 @@ export default function NewNote() {
                                 : null
                                 }
                             </div>
-                            <Button type="button">Add</Button>
+                            <Button onClick={() => handleNewTag(textTag)} type="button">Add</Button>
                         </div>
                         <div className="flex gap-2 mt-4">
                             {selectedTagElements}
