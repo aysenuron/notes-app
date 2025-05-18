@@ -1,6 +1,7 @@
+import { useNavigate } from "react-router";
 import { useEffect, useState } from "react";
 import type { Tag, Note } from "@/utils/types";
-import { getNotes } from "@/utils/api";
+import { getNotes, createNote } from "@/utils/api";
 import GoBackButton from "@/components/ui/goBackButton"
 import { Badge } from "@/components/ui/badge";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -17,6 +18,12 @@ export default function NewNote() {
     const [tags, setTags] = useState<Tag[]>([]);
     const [selectedTags, setSelectedTags] = useState<Tag[]>([]);
 
+    const [noteTitle, setNoteTitle] = useState<string>("");
+    const [noteContent, setNoteContent] = useState<string>("");
+
+    let navigate = useNavigate();
+
+
     useEffect(() => {
         async function loadTags() {
           try {
@@ -31,6 +38,22 @@ export default function NewNote() {
         loadTags()
       }, []);
 
+      const handleSave = async () => {
+        try {
+            const title = noteTitle
+            const content = noteContent
+            const tags = selectedTags
+            await createNote(title, content, tags);
+
+            setNoteTitle("");
+            setNoteContent("");
+            setFilteredTags([]);
+            navigate("/");
+        } catch (error) {
+            console.error("Error saving note:", error);
+        }
+      }
+
       const handleTagInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const tagValue = e.target.value;
         setTextTag(tagValue);
@@ -38,6 +61,13 @@ export default function NewNote() {
         const matchTag = tags.filter(tag => tag.includes(tagValue));
         setFilteredTags(matchTag);
       };
+
+      const handleInputChange = <
+      T extends HTMLInputElement | HTMLTextAreaElement
+        >(e: React.ChangeEvent<T>, setValue: React.Dispatch<React.SetStateAction<string>>) => {
+        const value = e.target.value;
+        setValue(value);
+      }
 
       const filteredTagsElement = filteredTags.map(tag => (
         <div key={tag}>
@@ -79,14 +109,13 @@ export default function NewNote() {
                 <Button variant={"ghost"}>
                     <Trash className="h-4 text-foreground" />
                 </Button>
-                <Button>Save</Button>
+                <Button onClick={handleSave}>Save</Button>
                 </div>
             </div>
             <div className="mt-5">
-                <form action="">
-                    <Input type="text" placeholder="Title" className="w-full md:w-1/3" />
+                    <Input onChange={(e) => handleInputChange(e, setNoteTitle)} value={noteTitle} type="text" placeholder="Title" className="w-full md:w-1/3" />
                     <div className="mt-8">
-                        <Textarea placeholder="Type your note here." className="text-foreground" />
+                        <Textarea onChange={(e) => handleInputChange(e, setNoteContent)} value={noteContent} placeholder="Type your note here." className="text-foreground" />
                     </div>
                     <div className="mt-8 bg-secondary p-6 rounded-2xl w-full lg:w-1/2">
                             <div className="flex w-full items-center space-x-2">
@@ -114,7 +143,6 @@ export default function NewNote() {
                             {selectedTagElements}
                         </div>
                     </div>
-                </form>
             </div>
         </>
     )

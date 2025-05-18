@@ -1,4 +1,4 @@
-import { Note } from "./types";
+import { Note, Tag } from "./types";
 
 export async function getNotes(): Promise<Note[]> {
     const res = await fetch("https://681f0c49c1c291fa6635d23c.mockapi.io/api/notes");
@@ -11,4 +11,30 @@ export async function getNote(id: number): Promise<Note> {
     const data = await res.json();
     console.log(data)
     return data;
+}
+
+export async function createNote(title: string, content: string, tags: Tag[]) {
+    try {
+        const res = await fetch("https://681f0c49c1c291fa6635d23c.mockapi.io/api/notes", {
+            method: "POST",
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                title: title,
+                content: content,
+                createdAt: Date.now(),
+                tags: tags
+            })
+        });
+        if(!res.ok) {
+            throw new Error(`Failed to create note: ${res.status}`);
+        }
+        const data = await res.json()
+        return data;
+    } catch (error) {
+        console.error("Error creating note:", error);
+        throw error;
+    }
 }
