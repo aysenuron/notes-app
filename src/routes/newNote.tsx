@@ -38,17 +38,24 @@ export default function NewNote() {
         loadTags()
       }, []);
 
+      const handleDiscard = () => {
+        setNoteTitle("");
+        setNoteContent("");
+        setFilteredTags([]);
+        navigate("/");
+      }
+
       const handleSave = async () => {
         try {
-            const title = noteTitle
-            const content = noteContent
-            const tags = selectedTags
-            await createNote(title, content, tags);
+              const title = noteTitle ? noteTitle : "A wonderful new note"
+              const content = noteContent ? noteContent : "Keep calm and write something"
+              const tags = selectedTags
+              await createNote(title, content, tags);
 
-            setNoteTitle("");
-            setNoteContent("");
-            setFilteredTags([]);
-            navigate("/");
+              setNoteTitle("");
+              setNoteContent("");
+              setFilteredTags([]);
+              navigate("/");
         } catch (error) {
             console.error("Error saving note:", error);
         }
@@ -106,7 +113,7 @@ export default function NewNote() {
             <div className="flex justify-between items-center">
                 <GoBackButton />
                 <div className="flex gap-5 items-center">
-                <Button variant={"ghost"}>
+                <Button onClick={handleDiscard} variant={"ghost"}>
                     <Trash className="h-4 text-foreground" />
                 </Button>
                 <Button onClick={handleSave}>Save</Button>
@@ -139,7 +146,7 @@ export default function NewNote() {
                                 </div>
                                 <Button onClick={() => handleNewTag(textTag)} type="submit">Add</Button>
                             </div>
-                        <div className="flex gap-2 mt-4">
+                        <div className="flex gap-2 mt-4 flex-wrap">
                             {selectedTagElements}
                         </div>
                     </div>
