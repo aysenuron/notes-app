@@ -6,3 +6,10 @@ export const getPreview = (text: string, wordCount: number = 20) => {
 };
 
 export const formatDate = (timestamp: number) => format(new Date(timestamp * 1000), "PPP");
+
+export const handleInputChange = 
+<T extends HTMLInputElement | HTMLTextAreaElement>
+(e: React.ChangeEvent<T>, setValue: React.Dispatch<React.SetStateAction<string>>) => {
+  const value = e.target.value;
+  setValue(value);
+}

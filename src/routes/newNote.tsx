@@ -2,6 +2,7 @@ import { useNavigate } from "react-router";
 import { useState } from "react";
 import type { Tag } from "@/utils/types";
 import { createNote } from "@/utils/api";
+import { handleInputChange } from "@/utils/functions";
 import GoBackButton from "@/components/ui/goBackButton"
 import { Badge } from "@/components/ui/badge";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -54,13 +55,6 @@ export default function NewNote() {
         const matchTag = tags.filter(tag => tag.includes(tagValue));
         setFilteredTags(matchTag);
       };
-
-      const handleInputChange = <
-      T extends HTMLInputElement | HTMLTextAreaElement
-        >(e: React.ChangeEvent<T>, setValue: React.Dispatch<React.SetStateAction<string>>) => {
-        const value = e.target.value;
-        setValue(value);
-      }
 
       const filteredTagsElement = filteredTags.map(tag => (
         <div key={tag}>

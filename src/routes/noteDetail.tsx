@@ -90,7 +90,7 @@ export default function Note() {
             <div className="flex gap-5 items-center">
                 <AlertDialogElement />
                 <Link to={note ? `/edit/${note.id}` : "/"}>
-                    <Button variant={"outline"}><SquarePen className="w-4 h-4" /></Button>
+                    <Button variant={"outline"}><SquarePen className="w-4 h-4 text-foreground" /></Button>
                 </Link>
                 </div>
         </div>
