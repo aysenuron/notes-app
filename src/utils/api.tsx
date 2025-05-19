@@ -58,3 +58,29 @@ export async function deleteNote(id: number) {
         throw error;
     }
 }
+
+export async function editNote(id: number, title: string, content: string, tags: Tag[]) {
+    try {
+        const res = await fetch(`https://681f0c49c1c291fa6635d23c.mockapi.io/api/notes/${id}`, {
+            method: "PUT",
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                title: title,
+                content: content,
+                updatedAt: Date.now(),
+                tags: tags
+            })
+        });
+        if(!res.ok) {
+            throw new Error(`Failed to update note: ${res.status}`);
+        }
+        const data = await res.json()
+        return data;
+    } catch (error) {
+        console.error("Error updating note:", error);
+        throw error;
+    }
+}

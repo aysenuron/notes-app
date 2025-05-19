@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router";
-import { useEffect, useState } from "react";
-import type { Tag, Note } from "@/utils/types";
-import { getNotes, createNote } from "@/utils/api";
+import { useState } from "react";
+import type { Tag } from "@/utils/types";
+import { createNote } from "@/utils/api";
 import GoBackButton from "@/components/ui/goBackButton"
 import { Badge } from "@/components/ui/badge";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -11,32 +11,18 @@ import { Trash } from 'lucide-react';
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { X } from 'lucide-react';
+import { useLoadTags } from "@/hooks/useLoadTags";
 
 export default function NewNote() {
     const [textTag, setTextTag] = useState<string>("");
     const [filteredTags, setFilteredTags] = useState<Tag[]>([]);
-    const [tags, setTags] = useState<Tag[]>([]);
     const [selectedTags, setSelectedTags] = useState<Tag[]>([]);
 
     const [noteTitle, setNoteTitle] = useState<string>("");
     const [noteContent, setNoteContent] = useState<string>("");
 
     let navigate = useNavigate();
-
-
-    useEffect(() => {
-        async function loadTags() {
-          try {
-            const data: Note[] = await getNotes()
-            const allTags = data.flatMap(note => note.tags);
-            const uniqueTags = [...new Set(allTags)];
-            setTags(uniqueTags);
-          } catch (error) {
-            console.error("Error fetching all tags", error);
-          }
-        }
-        loadTags()
-      }, []);
+    const tags = useLoadTags();
 
       const handleDiscard = () => {
         setNoteTitle("");

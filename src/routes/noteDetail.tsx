@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router"
+import { useParams, useNavigate, Link } from "react-router"
 import GoBackButton from "@/components/ui/goBackButton";
 import { getNote, deleteNote } from "@/utils/api";
 import type { Note } from "@/utils/types";
@@ -79,10 +79,6 @@ export default function Note() {
         }
     }
 
-    const handleEdit = () => {
-
-    }
-
     const noteElement = note ? 
     <NoteItem note={note} />
     : <h2>Note doesn't exist</h2>
@@ -93,7 +89,9 @@ export default function Note() {
             <GoBackButton />
             <div className="flex gap-5 items-center">
                 <AlertDialogElement />
-                <Button variant={"outline"}><SquarePen className="w-4 h-4" /></Button>
+                <Link to={note ? `/edit/${note.id}` : "/"}>
+                    <Button variant={"outline"}><SquarePen className="w-4 h-4" /></Button>
+                </Link>
                 </div>
         </div>
         <div>

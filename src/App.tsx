@@ -4,6 +4,7 @@ import { ThemeProvider } from './components/ui/theme-provider'
 import Home from './routes/home'
 import Note from './routes/noteDetail'
 import NewNote from './routes/newNote' 
+import EditNote from './routes/editNote'
 import Layout from './assets/layouts/layout'
 function App() {
 
@@ -15,6 +16,7 @@ function App() {
             <Route index element={<Home />} />
             <Route path=':id' element={<Note />} />
             <Route path='new' element={<NewNote />} />
+            <Route path='edit/:id' element={<EditNote />} />
           </Route>
         </Routes>
       </BrowserRouter>
