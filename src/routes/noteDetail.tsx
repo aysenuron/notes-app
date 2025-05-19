@@ -8,6 +8,18 @@ import { Button } from "@/components/ui/button";
 import { SquarePen } from 'lucide-react';
 import { Trash } from 'lucide-react';
 
+import {
+    AlertDialog,
+    AlertDialogAction,
+    AlertDialogCancel,
+    AlertDialogContent,
+    AlertDialogDescription,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogTitle,
+    AlertDialogTrigger,
+  } from "@/components/ui/alert-dialog"
+
 export default function Note() {
     const [loading, setLoading] = useState<boolean>(false);
     const [note, setNote] = useState<Note | null>(null)
@@ -28,7 +40,30 @@ export default function Note() {
             }
         };
         loadNote();
-    }, [params.id])
+    }, [params.id]);
+
+    const AlertDialogElement = () => (
+        <AlertDialog>
+            <AlertDialogTrigger asChild>
+                <Button variant={"ghost"}>
+                    <Trash className="h-4 text-foreground" />
+                </Button>
+            </AlertDialogTrigger>
+            <AlertDialogContent>
+                <AlertDialogHeader>
+                    <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                    <AlertDialogDescription>
+                        This action cannot be undone. This will permanently delete your note
+                        and remove your data from our servers.
+                    </AlertDialogDescription>
+                </AlertDialogHeader>
+                <AlertDialogFooter>
+                    <AlertDialogCancel>Cancel</AlertDialogCancel>
+                    <AlertDialogAction onClick={handleDelete}>Delete</AlertDialogAction>
+                </AlertDialogFooter>
+            </AlertDialogContent>
+        </AlertDialog>
+    )
 
     const handleDelete = async () => {
         try {
@@ -57,10 +92,8 @@ export default function Note() {
         <div className="mb-8 flex justify-between">
             <GoBackButton />
             <div className="flex gap-5 items-center">
-                <Button onClick={handleDelete} variant={"ghost"}>
-                    <Trash className="h-4 text-foreground" />
-                </Button>
-                <Button onClick={handleEdit} variant={"outline"}><SquarePen className="w-4 h-4" /></Button>
+                <AlertDialogElement />
+                <Button variant={"outline"}><SquarePen className="w-4 h-4" /></Button>
                 </div>
         </div>
         <div>
