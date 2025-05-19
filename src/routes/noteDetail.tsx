@@ -1,17 +1,19 @@
 import { useEffect, useState } from "react";
-import { useParams, Link } from "react-router"
+import { useParams, useNavigate } from "react-router"
 import GoBackButton from "@/components/ui/goBackButton";
-import { getNote } from "@/utils/api";
+import { getNote, deleteNote } from "@/utils/api";
 import type { Note } from "@/utils/types";
 import NoteItem from "@/components/noteItem";
 import { Button } from "@/components/ui/button";
 import { SquarePen } from 'lucide-react';
+import { Trash } from 'lucide-react';
 
 export default function Note() {
     const [loading, setLoading] = useState<boolean>(false);
     const [note, setNote] = useState<Note | null>(null)
 
     const params = useParams();
+    const navigate = useNavigate();
 
     useEffect(() => {
         async function loadNote() {
@@ -20,13 +22,31 @@ export default function Note() {
                 const data = await getNote(Number(params.id));
                 setNote(data);
             } catch (error) {
-                TypeError("There was an error uploading the note.")
+                console.error("There was an error uploading the note.");
             } finally {
                 setLoading(false);
             }
         };
         loadNote();
     }, [params.id])
+
+    const handleDelete = async () => {
+        try {
+            if(note) {
+                await deleteNote(note.id);
+                navigate("/");
+            } else {
+                console.error("There was an error uploading the note.");
+            }
+            
+        } catch (error) {
+            console.error("Error saving note:", error);
+        }
+    }
+
+    const handleEdit = () => {
+
+    }
 
     const noteElement = note ? 
     <NoteItem note={note} />
@@ -36,11 +56,12 @@ export default function Note() {
         <>
         <div className="mb-8 flex justify-between">
             <GoBackButton />
-            <Button variant={"outline"}>
-                {
-                    <SquarePen className="w-4 h-4" />
-                }
-            </Button>
+            <div className="flex gap-5 items-center">
+                <Button onClick={handleDelete} variant={"ghost"}>
+                    <Trash className="h-4 text-foreground" />
+                </Button>
+                <Button onClick={handleEdit} variant={"outline"}><SquarePen className="w-4 h-4" /></Button>
+                </div>
         </div>
         <div>
             {loading ? <h2>The note is loading...</h2> : noteElement}

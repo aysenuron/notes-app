@@ -38,3 +38,23 @@ export async function createNote(title: string, content: string, tags: Tag[]) {
         throw error;
     }
 }
+
+export async function deleteNote(id: number) {
+    try {
+        const res = await fetch(`https://681f0c49c1c291fa6635d23c.mockapi.io/api/notes/${id}`, {
+            method: "DELETE",
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            }
+        });
+        if(!res.ok) {
+            throw new Error(`Failed to delete note: ${res.status}`);
+        }
+        const data = await res.json()
+        return data;
+    } catch (error) {
+        console.error("Error deleting note:", error);
+        throw error;
+    }
+}
