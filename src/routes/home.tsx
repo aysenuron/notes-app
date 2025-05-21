@@ -28,7 +28,10 @@ export default function Home() {
       setLoading(true);
       try {
         const data: Note[] = await getNotes()
-        setNotes(data);
+        const sortedNotes = [...data].sort((a, b) => 
+          new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime()
+        );
+        setNotes(sortedNotes);
         const allTags = data.flatMap(note => note.tags);
         const uniqueTags = [...new Set(allTags)];
         setTags(uniqueTags);

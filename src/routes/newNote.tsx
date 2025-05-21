@@ -25,12 +25,12 @@ export default function NewNote() {
     let navigate = useNavigate();
     const tags = useLoadTags();
 
-      const handleDiscard = () => {
-        setNoteTitle("");
-        setNoteContent("");
-        setFilteredTags([]);
-        navigate("/");
-      }
+    const handleDiscard = () => {
+      setNoteTitle("");
+      setNoteContent("");
+      setFilteredTags([]);
+      navigate("/");
+    }
 
       const handleSave = async () => {
         try {
