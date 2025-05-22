@@ -70,7 +70,7 @@ export async function editNote(id: number, title: string, content: string, tags:
             body: JSON.stringify({
                 title: title,
                 content: content,
-                updatedAt: Date.now(),
+                updatedAt: Math.floor(Date.now() / 1000),
                 tags: tags
             })
         });
