@@ -8,7 +8,7 @@ import { getNotes } from "@/utils/api"
 import { Tag, Note } from "@/utils/types"
 import { useUpdateURLParams } from "@/hooks/useUpdateURLParams"
 
-import { X } from 'lucide-react';
+import { X, NotebookPen } from 'lucide-react';
 
 export default function Home() {
   const [loading, setLoading] = useState<boolean>(false);
@@ -96,7 +96,7 @@ export default function Home() {
         state={{search: `?${searchParams.toString()}`}}
         >
           <Button size={"lg"} className="fixed drop-shadow-lg bottom-5 right-5 lg:bottom-10 lg:right-10 rounded-full hover:shadow-none">
-            + Create new note
+            <NotebookPen /> Create new note
           </Button>
         </Link>
         </>
